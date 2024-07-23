@@ -17,14 +17,23 @@ public class Game : MonoBehaviour
     public TMP_Text tapValueText;
     public TMP_Text upgradePriceText;
 
+    private void Update()
+    {
+        // Text output
+        scoreText.text = score.ToString();
+        playerLevelText.text = "LV " + playerLevel.ToString();
+        tapValueText.text = "+" + tapValue.ToString();
+        upgradePriceText.text = "UPGRADE " + upgradePrice.ToString();
+    }
+
     public void OnClickButton()
     {
         score += tapValue;
         SpawnMoney();
     }
+
     public void OnUpgrade()
     {
-        // Расчеты при апгрейде
         if (score >= upgradePrice)
         {
             playerLevel++;
@@ -33,27 +42,12 @@ public class Game : MonoBehaviour
             upgradePrice += 10;  
         }
     }
+
     private void SpawnMoney()
     {
-        // Создание новой купюры
         GameObject moneyInstance = Instantiate(moneyPrefab, spawnPoint.position, Quaternion.Euler(0, 0, Random.Range(0, 360)));
-
-        // Установка начального направления движения купюры
-        Vector2 direction = new Vector2(Random.Range(-0.4f, 0.4f), 1f); // Случайное направление вверх
-
-        // Назначение компонента Rigidbody2D купюры
+        Vector2 direction = new Vector2(Random.Range(-0.4f, 0.4f), 1f);
         Rigidbody2D rb = moneyInstance.GetComponent<Rigidbody2D>();
-
-        // Применение начального направления движения
         rb.velocity = direction * 10f;
-    }
-
-    private void Update()
-    {
-        // Вывод текста
-        scoreText.text = score.ToString();
-        playerLevelText.text = "LV " + playerLevel.ToString();
-        tapValueText.text = "+" + tapValue.ToString();
-        upgradePriceText.text = "UPGRADE " + upgradePrice.ToString();
     }
 }
